@@ -21,16 +21,10 @@ def handle(msg):
     
     if StatusMap[ chat_id ].get("status") == "waiting" or len( msg['text']  ) > 100 :
         post = msg['text'] 
-        if len(post) < 30:
-            bot.sendMessage(chat_id , "字数条少 "  )
-            return 
-
-        bot.sendMessage(chat_id , "向WP提交 "  )
 
         ret = postNew( post )
 
         bot.sendMessage(chat_id , "发送结果 " + str(ret) )
-        StatusMap[ chat_id ]["status"] = ''
 
     if msg['text'] == '/new':
         bot.sendMessage(chat_id, '发送文章内容:')
@@ -89,21 +83,6 @@ bot = telepot.Bot(TOKEN)
 MessageLoop(bot, handle).run_as_thread()
 
 print ('BOT ...')
-
-class Unbuffered(object):
-   def __init__(self, stream):
-       self.stream = stream
-   def write(self, data):
-       self.stream.write(data)
-       self.stream.flush()
-   def writelines(self, datas):
-       self.stream.writelines(datas)
-       self.stream.flush()
-   def __getattr__(self, attr):
-       return getattr(self.stream, attr)
-import sys
-sys.stdout = Unbuffered(sys.stdout)
-
 
 # Keep the program running.
 while 1:
